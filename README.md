@@ -108,9 +108,9 @@ The state updates are currently spread across the various components. This makes
 
 It's sometimes useful to centralise state updates so they are all managed in one place. We can use the `React.useReducer()` hook for this.
 
-### `useReducer`
+### `useReducer`
 
-This hook is similar to `React.useState()`. We pass it our initial state value, _and_ a "reducer" function. It returns our state and a special `dispatch` function used to update the state.
+This hook is similar to `React.useState()`. We pass it our initial state value, _and_ a "reducer" function. It returns our state and a special `dispatch` function used to update the state. You can read more [in the docs](https://reactjs.org/docs/hooks-reference.html#usereducer).
 
 ```jsx
 function Counter() {
