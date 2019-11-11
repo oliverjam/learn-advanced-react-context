@@ -1,68 +1,99 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Learn Advanced React: state management with context
 
-## Available Scripts
+We're going to learn how to manage global application state with React context.
 
-In the project directory, you can run:
+## Learning outcomes
 
-### `yarn start`
+- [ ] Why we might want to avoid "prop drilling"
+- [ ] Using context to access global state
+- [ ] Centralising state updates with reducers
+- [ ] Using custom hooks to create Redux-like abstractions
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Part 0: setup
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+1. Clone this repo
+1. `cd` into it and run `npm install`
+1. Run `npm start` and it should automatically open in your browser
 
-### `yarn test`
+You should see a counter that lets you increment and decrement a number. The app also displays a large copy of the count separately at the top right.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![](./screenshots/counter.gif)
 
-### `yarn build`
+## Part 1: find the bug
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Open `src/App.js`. It contains quite a few small components. Our `count` state has to live at the top-level component as it is needed in both branches of the component tree: inside `Counter` _and_ `BigCount`.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+There's a bug in here somewhere: if you try the UI you should see that something doesn't work.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Task
 
-### `yarn eject`
+Find the bug and fix it so the counter works as expected.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Prop drilling
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Since there are several levels of nesting we have to pass our state down via props through multiple components. This is often called "prop drilling". It can be both annoying and a source of bugs, as we just discovered.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+We can avoid doing this using React context.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## React context
 
-## Learn More
+Usually the only way for a component to use values from elsewhere in the component tree is if they are passed in as props. Context lets us bypass this and directly access values from further up the tree.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Creating context
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+We can create a context like this:
 
-### Code Splitting
+```jsx
+import React from "react";
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+const MyContext = React.createContext();
+```
 
-### Analyzing the Bundle Size
+### Providing context
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+We now need to _provide_ a value to a component tree using this context. The context object contains a `.Provider` property, which is a component we can use to do this:
 
-### Making a Progressive Web App
+```jsx
+import React from "react";
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+const MyContext = React.createContext();
 
-### Advanced Configuration
+function App() {
+  return (
+    <MyContext.Provider value={{ test: 5 }}>
+      <Child />
+    </MyContext.Provider>
+  );
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+We pass whatever we want children to be able to access to the provider using its `value` prop.
 
-### Deployment
+### Accessing context
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+Any children within the provider can now access the context value using the `React.useContext` hook.
 
-### `yarn build` fails to minify
+```jsx
+import React from "react";
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+const MyContext = React.createContext();
+
+function App() {
+  // ...
+}
+
+function Child() {
+  const { test } = React.useContext(MyContext);
+  return <div>{test}</div>;
+}
+```
+
+**Important**: the child needs access to the original context variable so that `useContext` knows what value to get. If the context is defined in a different file you should export it so that children can import it and use here.
+
+## Part 2: context refactor
+
+Now we know how to use context we can solve our prop drilling problem in our counter.
+
+### Task
+
+Refactor your `src/App.js` components to use context to pass `count` and `setCount`. You shouldn't need to pass any props at all.

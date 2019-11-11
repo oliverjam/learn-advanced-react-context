@@ -23,7 +23,7 @@ function Counter({ count, setCount }) {
     <div style={{ display: "flex", alignItems: "center" }}>
       <Decrement setCount={setCount} />
       <Display count={count} />
-      <Increment />
+      <Increment setCount={setCount} />
     </div>
   );
 }
