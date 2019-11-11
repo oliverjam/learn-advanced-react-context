@@ -13,19 +13,72 @@ body {
 
 /* reset defaults */
 
-button {
-  display: block;
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+input,
+label {
   color: inherit;
-  font-size: 1.5rem;
+  font-size: inherit;
   font-family: inherit;
   border: 0;
-  border-radius: 50%;
-  width: 2.75rem;
-  height: 2.75rem;
-  background: hsl(220, 20%, 80%);
+  background: none;
+}
+
+button {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 /* eliminate dotted inner ring in Firefox */
 button::-moz-focus-inner {
   border: 0;
+}
+
+.counter__button {
+  border: 0;
+  border-radius: 50%;
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.5rem;
+  background: hsl(220, 20%, 80%);
+}
+
+.todos {
+  display: grid;
+  grid-row-gap: 1.5rem;
+}
+
+.todos__item {
+  max-width: max-content;
+  border-radius: 0.125rem;
+  box-shadow: 0 2px 4px hsla(220, 20%, 40%, 0.3);
+  padding: 1rem;
+  background: #fff;
+}
+
+.todos__item + .todos__item {
+  margin-top: 1rem;
+}
+
+.todos__item > * + * {
+  margin-left: 1rem;
+}
+
+.todos__input {
+  display: block;
+  margin: 0.5rem 0;
+  border-radius: 0.125rem;
+  box-shadow: 0 2px 6px hsla(220, 20%, 40%, 0.3);
+  padding: 0.5rem;
+  background-color: #fff;
+}
+
+.todos__input:focus {
+  outline: 0;
+  box-shadow: 0 2px 6px hsla(220, 20%, 40%, 0.3),
+    0 6px 14px hsla(220, 20%, 50%, 0.2);
 }

@@ -29,11 +29,25 @@ function Counter({ count, setCount }) {
 }
 
 function Decrement({ setCount }) {
-  return <button onClick={() => setCount(oldCount => oldCount - 1)}>-</button>;
+  return (
+    <button
+      className="counter__button"
+      onClick={() => setCount(oldCount => oldCount - 1)}
+    >
+      -
+    </button>
+  );
 }
 
 function Increment({ setCount }) {
-  return <button onClick={() => setCount(oldCount => oldCount + 1)}>+</button>;
+  return (
+    <button
+      className="counter__button"
+      onClick={() => setCount(oldCount => oldCount + 1)}
+    >
+      +
+    </button>
+  );
 }
 
 function Display({ count }) {

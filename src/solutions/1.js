@@ -1,6 +1,6 @@
 import React from "react";
 
-function App() {
+function CountApp() {
   const [count, setCount] = React.useState(0);
   return (
     <div>
@@ -44,4 +44,4 @@ function Display({ count }) {
   );
 }
 
-export default App;
+export default CountApp;

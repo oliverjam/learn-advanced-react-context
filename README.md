@@ -71,7 +71,7 @@ We pass whatever we want children to be able to access to the provider using its
 
 ### Accessing context
 
-Any children within the provider can now access the context value using the `React.useContext` hook.
+Any children within the provider can now access the context value using the `React.useContext()` hook.
 
 ```jsx
 import React from "react";
@@ -97,3 +97,65 @@ Now we know how to use context we can solve our prop drilling problem in our cou
 ### Task
 
 Refactor your `src/App.js` components to use context to pass `count` and `setCount`. You shouldn't need to pass any props at all.
+
+## Centralising updates with reducers
+
+Open `src/Todos.js`. This is a todo-list application that renders an array of todos that the user can add to and mark as complete.
+
+![](./screenshots/todos.gif)
+
+The state updates are currently spread across the various components. This makes it hard to see at a glance what updates are possible and how they work, even for a small app like this with only two types of updates.
+
+It's sometimes useful to centralise state updates so they are all managed in one place. We can use the `React.useReducer()` hook for this.
+
+### `useReducer`
+
+This hook is similar to `React.useState()`. We pass it our initial state value, _and_ a "reducer" function. It returns our state and a special `dispatch` function used to update the state.
+
+```jsx
+function Counter() {
+  const [count, dispatch] = React.useReducer(0, reducer);
+  return <div>{count}</div>;
+}
+```
+
+### The reducer
+
+A reducer is a function that receives state and an "action" as arguments, then returns the new state based on the action. The convention is for the action to be an object with a `type` property that determines how the state updates. It can also have a `payload` property with data required for the update.
+
+Lets look at the counter example.
+
+```js
+function reducer(state, action) {
+  switch (action.type) {
+    case "increment":
+      return state + 1;
+    case "decrement":
+      return state - 1;
+    case "custom_amount":
+      return state + action.payload;
+  }
+}
+```
+
+This function uses a switch statement to describe all the possible actions that can update the state.
+
+### `dispatch`
+
+When the `dispatch` function is triggered it will call the reducer with the current state and whatever action was passed in. If we wanted to increment the count state above we would call `dispatch({ type: "increment" })`. We can pass extra properties in here too. For example this `dispatch({ type: "custom_amount", payload: 10 })` will increment the count by 10.
+
+## Part 3: reducer refactor
+
+It would be nice to centralise the state updates for our todo list.
+
+### Task
+
+Use the `React.useReducer()` hook to move all the state updates in `src/Todos.js` into one place. You'll need to pass `dispatch` down via props instead of `setTodos`.
+
+## Part 4: reducers and context
+
+We still have the prop drilling problem here: we have to pass `dispatch` and our state down via props. It's not too bad here but if we wanted to break this component up more it might get unwieldly. The [React docs actually recommend this pattern](https://reactjs.org/docs/hooks-faq.html#how-to-avoid-passing-callbacks-down) for deep updates.
+
+### Task
+
+Use context to pass your state and `dispatch` down without passing any props.

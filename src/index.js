@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./global.css";
-import App from "./App";
+// import Counter from "./Counter";
+import Todos from "./solutions/3";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<Todos />, document.getElementById("root"));

@@ -2,7 +2,7 @@ import React from "react";
 
 const CountContext = React.createContext();
 
-function App() {
+function CountApp() {
   const [count, setCount] = React.useState(0);
   return (
     <div>
@@ -48,4 +48,4 @@ function Display() {
   return <span style={{ margin: "0 1rem" }}>{count}</span>;
 }
 
-export default App;
+export default CountApp;
