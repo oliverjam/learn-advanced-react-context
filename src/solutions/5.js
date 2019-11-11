@@ -1,5 +1,7 @@
 import React from "react";
 
+const TodoContext = React.createContext();
+
 function reducer(state, action) {
   switch (action.type) {
     case "add":
@@ -23,26 +25,32 @@ const initialState = {
   showCompleted: true,
 };
 
+function useSelector(selector) {
+  const { state } = React.useContext(TodoContext);
+  return selector(state);
+}
+
+function useDispatch() {
+  const { dispatch } = React.useContext(TodoContext);
+  return dispatch;
+}
+
 function Todos() {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   return (
-    <div className="todos">
-      <h1>Todo list</h1>
-      <AddTodo dispatch={dispatch} />
-      <TodoList
-        todos={state.todos}
-        dispatch={dispatch}
-        showCompleted={state.showCompleted}
-      />
-      <ToggleCompleted
-        showCompleted={state.showCompleted}
-        dispatch={dispatch}
-      />
-    </div>
+    <TodoContext.Provider value={{ state, dispatch }}>
+      <div className="todos">
+        <h1>Todo list</h1>
+        <AddTodo />
+        <TodoList />
+        <ToggleCompleted />
+      </div>
+    </TodoContext.Provider>
   );
 }
 
-function AddTodo({ dispatch }) {
+function AddTodo() {
+  const dispatch = useDispatch();
   function addTodo(event) {
     event.preventDefault();
     const text = event.target.elements.addTodo.value;
@@ -67,7 +75,10 @@ function AddTodo({ dispatch }) {
   );
 }
 
-function TodoList({ todos, dispatch, showCompleted }) {
+function TodoList() {
+  const dispatch = useDispatch();
+  const todos = useSelector(state => state.todos);
+  const showCompleted = useSelector(state => state.showCompleted);
   return (
     <ul>
       {todos
@@ -92,7 +103,8 @@ function TodoList({ todos, dispatch, showCompleted }) {
   );
 }
 
-function ToggleTodo({ id, dispatch, checked }) {
+function ToggleTodo({ id, checked }) {
+  const dispatch = useDispatch();
   function toggleTodo() {
     dispatch({ type: "toggle", payload: id });
   }
@@ -106,7 +118,9 @@ function ToggleTodo({ id, dispatch, checked }) {
   );
 }
 
-function ToggleCompleted({ showCompleted, dispatch }) {
+function ToggleCompleted() {
+  const dispatch = useDispatch();
+  const showCompleted = useSelector(state => state.showCompleted);
   return (
     <button onClick={() => dispatch({ type: "toggle_completed" })}>
       {showCompleted ? "Hide" : "Show"} completed todos

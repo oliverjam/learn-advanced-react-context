@@ -21,7 +21,7 @@ You should see a counter that lets you increment and decrement a number. The app
 
 ## Part 1: find the bug
 
-Open `src/App.js`. It contains quite a few small components. Our `count` state has to live at the top-level component as it is needed in both branches of the component tree: inside `Counter` _and_ `BigCount`.
+Open `src/Counter.js`. It contains quite a few small components. Our `count` state has to live at the top-level component as it is needed in both branches of the component tree: inside `Counter` _and_ `BigCount`.
 
 There's a bug in here somewhere: if you try the UI you should see that something doesn't work.
 
@@ -96,7 +96,7 @@ Now we know how to use context we can solve our prop drilling problem in our cou
 
 ### Task
 
-Refactor your `src/App.js` components to use context to pass `count` and `setCount`. You shouldn't need to pass any props at all.
+Refactor your `src/Counter.js` components to use context to pass `count` and `setCount`. You shouldn't need to pass any props at all.
 
 ## Centralising updates with reducers
 
@@ -159,3 +159,38 @@ We still have the prop drilling problem here: we have to pass `dispatch` and our
 ### Task
 
 Use context to pass your state and `dispatch` down without passing any props.
+
+## Part : "Redux" hooks
+
+The popular state management library Redux uses custom hooks to expose its global state and `dispatch` function (which work just like the built-in React ones). For example:
+
+```jsx
+function App() {
+  const other = useSelector(state => state.thing.other);
+  return <div>{other}</div>;
+}
+```
+
+allows you to pass in a function that selects just the slice of your state object you want.
+
+Redux also has a `useDispatch` hook for easy access to state updates:
+
+```jsx
+function App() {
+  const dispatch = useDispatch();
+  return <button onClick={() => dispatch({ type: "thing" })}>Click me</button>;
+}
+```
+
+### Custom hooks
+
+> A custom Hook is a JavaScript function whose name starts with ”use” and that may call other Hooks  
+> —[React docs on custom hooks](https://reactjs.org/docs/hooks-custom.html)
+
+### Task
+
+Create your own versions of `useSelector` and `useDispatch`.
+
+`useSelector` should take a function as an argument. It should call this function with the entire state object and return the result. `useDispatch` should just return the `dispatch` function.
+
+Refactor your app to use these new hooks.

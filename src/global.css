@@ -50,6 +50,7 @@ button::-moz-focus-inner {
 .todos {
   display: grid;
   grid-row-gap: 1.5rem;
+  justify-content: start;
 }
 
 .todos__item {
