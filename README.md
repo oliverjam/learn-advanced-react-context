@@ -162,7 +162,11 @@ Use context to pass your state and `dispatch` down without passing any props.
 
 ## Part : "Redux" hooks
 
-The popular state management library Redux uses custom hooks to expose its global state and `dispatch` function (which work just like the built-in React ones). For example:
+The popular state management library Redux uses context to store your state globally, with reducer functions to handle updates to it.
+
+It also uses custom hooks to expose this state object and a `dispatch` function (which works just like the built-in React one).
+
+For example the `useSelector()` hook allows you to pass in a function that selects just the slice of your state object you want.
 
 ```jsx
 function App() {
@@ -171,9 +175,7 @@ function App() {
 }
 ```
 
-allows you to pass in a function that selects just the slice of your state object you want.
-
-Redux also has a `useDispatch` hook for easy access to state updates:
+The `useDispatch()` hook makes it easy for components to trigger state updates:
 
 ```jsx
 function App() {
