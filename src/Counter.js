@@ -21,9 +21,9 @@ function BigCount({ count }) {
 function Counter({ count, setCount }) {
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
-      <Decrement setCount={setCount} />
+      <Decrement />
       <Display count={count} />
-      <Increment />
+      <Increment setCount={setCount} />
     </div>
   );
 }
