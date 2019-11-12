@@ -114,7 +114,7 @@ This hook is similar to `React.useState()`. We pass it our initial state value, 
 
 ```jsx
 function Counter() {
-  const [count, dispatch] = React.useReducer(0, reducer);
+  const [count, dispatch] = React.useReducer(reducer, 0);
   return <div>{count}</div>;
 }
 ```
