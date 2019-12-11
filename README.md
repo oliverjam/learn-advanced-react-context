@@ -160,7 +160,7 @@ We still have the prop drilling problem here: we have to pass `dispatch` and our
 
 Use context to pass your state and `dispatch` down without passing any props.
 
-## Part : "Redux" hooks
+## Part 4: "Redux" hooks
 
 The popular state management library Redux uses context to store your state globally, with reducer functions to handle updates to it.
 
