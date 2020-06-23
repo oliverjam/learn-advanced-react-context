@@ -121,7 +121,7 @@ function Counter() {
 
 ### The reducer
 
-A reducer is a function that receives state and an "action" as arguments, then returns the new state based on the action. The convention is for the action to be an object with a `type` property that determines how the state updates. It can also have a `payload` property with data required for the update.
+A reducer is a function that receives state and an "action" as arguments, then returns the new state based on the action. The convention is for the action to be an object with a `type` property that determines how the state updates. It can also have extra properties containing data required for the update.
 
 Lets look at the counter example.
 
@@ -133,7 +133,7 @@ function reducer(state, action) {
     case "decrement":
       return state - 1;
     case "custom_amount":
-      return state + action.payload;
+      return state + action.amount;
   }
 }
 ```
@@ -142,7 +142,7 @@ This function uses a switch statement to describe all the possible actions that 
 
 ### `dispatch`
 
-When the `dispatch` function is triggered it will call the reducer with the current state and whatever action was passed in. If we wanted to increment the count state above we would call `dispatch({ type: "increment" })`. We can pass extra properties in here too. For example this `dispatch({ type: "custom_amount", payload: 10 })` will increment the count by 10.
+When the `dispatch` function is triggered it will call the reducer with the current state and whatever action was passed in. If we wanted to increment the count state above we would call `dispatch({ type: "increment" })`. We can pass extra properties in here too. For example this `dispatch({ type: "custom_amount", amount: 10 })` will increment the count by 10.
 
 ## Part 3: reducer refactor
 
